@@ -1,0 +1,31 @@
+version: '3'
+services:
+  #openresty server
+  server:
+    build: ./openresty
+    image: server:1.0
+    depends_on:
+    - web
+    ports:
+    - 9000:9000
+
+  #source web
+  web:
+    build: ./web
+    image: web:1.0.0
+    volumes:
+    - ./web:/var/www/html
+    ports:
+    - 1025:80
+    depends_on:
+    - db
+
+  #midis database
+  db:
+    build: ./database
+    image: db:1.0.0
+    volumes:
+    - ./database/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+    
